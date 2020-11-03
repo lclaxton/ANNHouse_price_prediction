@@ -8,9 +8,33 @@ House price prediction using an ANN from Kaggle
 """
 
 import pandas as pd
+import matplotlib.pyplot as  plt
+import numpy as np
+import seaborn as sns
 
 # Import the data set
 df = pd.read_csv('kc_house_data.csv')
+
+# lets have alook at some of the summary statistics first
+
+df.info()
+
+# FIrst I want to get an overview of the pricing data.
+ax = plt.figure()
+df.price.hist(bins=100)
+plt.xlim([0,4e6])
+
+# next i want to see how many vairable have a lot of 0 values and if that makes 
+# sense
+df_int = df.drop('date',axis = 1)
+plt.figure()
+sns.heatmap(df_int.values != 0)
+plt.xticks(range(len(df_int.columns)), df_int.columns, rotation='vertical',)
+# Generally appears that allthough there are a lot of 0's it refers to whether 
+# or not the properties have a view or are by the waterfront.
+
+# looks like there isn't any missing data but Im interested in the year renovated 
+# and standardising it into yes or no instead of using the year it was renovated
 
 # Define a function to determine if the house has been renovated
 def is_renovated(x):
@@ -20,14 +44,22 @@ def is_renovated(x):
         return 1 
 df['is_renovated'] = df.yr_renovated.apply(is_renovated)
 
+
 # Drop the unusable datatest
 df.drop(['id','date','yr_renovated'],axis = 1,inplace=True)
+
+
+df.yr_renovated[df['yr_renovated'] == 0].count()
 
 # Determine the X and Y values  
 X = df.iloc[:,1:18].values
 y = df.iloc[:,0:1].values
 y = y/1000
 
+
+
+
+# %%
 
 
 # Note don't need to do a test train spilt when using cross validation as it 

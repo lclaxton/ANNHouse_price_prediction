@@ -23,7 +23,7 @@ df['is_renovated'] = df.yr_renovated.apply(is_renovated)
 # Drop the unusable datatest
 df.drop(['id','date','yr_renovated'],axis = 1,inplace=True)
 
-# Determine the X and Y values 
+# Determine the X and Y values  
 X = df.iloc[:,1:18].values
 y = df.iloc[:,0:1].values
 y = y/1000
